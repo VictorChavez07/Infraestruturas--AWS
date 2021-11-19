@@ -1,0 +1,99 @@
+##comandos clase 9 despues del parcial S3
+S3 objetos tipo imagenes videos dentro de unapagina web amaszon S3 nos ofrece el servicio donde cargarlos atravez de backeds este termino quiere decir q son contenedores donde se almacenara los objetos , podemos crear los backeds que queramos depsues poder orgnaizar nuestros objetos . se accdeden a estos mediante los protocolos https o http , tamine estos objetos el bacjed se repliza en varias zona de disponibilidad en una region  de amazon , nos ofrece 5Gb e almacenamiento gratuito ,
+
+
+aws configures 
+aws s3 ls //Lista los buckets del usuario mediante el siguiente comando.
+
+##el bucket nose escirbe con mayusculas todo en minusculas :S sino F  nisiquiera contener alguna mayusculas tampoco usar subguiones
+
+aws s3 mb s3://"your user name"  ##Crea un bucket a través del siguiente comand
+aws s3 ls s3://"your_user_name"
+
+aws s3 cp hello.html s3://"your_user_name" --acl public-read ## es con doble guion
+en este caso seria 
+aws s3 cp hello.html s3://victorxd --acl public-read ## se publiva de manera publica
+
+se observa tambine por el dashboard de aws 
+si lo deseas ver en la red 
+Se usa este comando como en mi caso 
+
+https://s3.amazonaws.com/victorxd/hello.html
+ DOMINIO / backet / el .html espublica  
+
+de manera general : 
+
+https://s3.amazonaws.com/"your_user_name"/hello.html.
+
+
+
+## alojamiento se un sitio web estatico 
+#3 la diferencia entre uno estatico y uno dinamico es que unicamente a partir del cliente siempre lo abrimos es el mismo pero uno dinamico se crea a partir de las necesidades de un cliente entonces de manera estatica si se piede almacnar S3
+
+
+##se usara almacenamiento  en bucket web estatico  crear index.html 
+
+aws s3 ls  s3://victorxd ## lista 
+## con este comando anterior se observa el tamaño 
+
+## ahora vamos a subir todos de golpe , entonces  s3 nos ofrece una sincronizacion no nuestro directorio de origen solo se sincronizan los archivos modificados 
+listmaos el bucket  para ver los archivos 
+
+ahora vamos a dincronizarlo nuestro bucket con todo lo q tengamos en nuestro directorio:
+
+aws s3 sync ./ s3://"your_user_name"/ --acl public-read
+
+como se oberva solo se agregan los 2 primeros ya que el hello no se modifico no se vuelve a subir  solo debera subirse los el archivo error e index y si lo listamos podemos observar q estamos muy por debajo e los 5gb 
+
+ahora alojaremos nuestros sitios webs estaticos 
+ ya que no queremos alojar el hello por q ya lo hicimos anteriormente 
+
+Demanera general 
+
+aws s3 website s3://your_user_name/
+--index-document index.html
+--error-document error.html
+
+en mi caso 
+## todo dbee estar en una linea 
+
+aws s3 website s3://victorxd/ --index-document index.html --error-document error.html
+
+en caso de los websites , haci hacemos la forma de como observarlos en la web 
+
+entonces  construimos estas URLS 
+
+De manera general
+
+http://your_user_name.s3-website-us-east-1.amazonaws.com/
+http://your_user_name.s3-website-us-east-1.
+amazonaws.com/index.html
+http://your_user_name.s3-website-us-east-1.
+amazonaws.com/login.html
+
+en mi caso 
+
+poner el link en tu navegador 
+
+http://victorxd.s3-website-us-east-1.amazonaws.com/
+http://victorxd.s3-website-us-east-1.amazonaws.com/index.html
+##es un caso de prueba para observar el error 
+http://victorxd.s3-website-us-east-1.amazonaws.com/login.html
+
+Deesta forma se alamaceno las paginas webs de manera estatica 
+
+
+Ahora eliminamos un archivo
+
+aws s3 rm s3://your_user_name/index.html
+
+aws s3 rm s3://victorxd/index.html
+
+si quisieramos eliminar todo de golpe 
+
+aws s3 rb s3://your_user_name --force
+
+aws s3 rb s3://victorxd --force
+
+
+AHORA EL EJERCICIO
